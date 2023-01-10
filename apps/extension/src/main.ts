@@ -108,14 +108,18 @@ function onFocus(e: HTMLInputElement) {
     // Get position
     const viewportOffset = e.getBoundingClientRect();
     const top = viewportOffset.top + e.offsetHeight;
-    const left = viewportOffset.left;
+    let left = viewportOffset.left;
+
+    if (e.offsetWidth > 200) {
+        left += (e.offsetWidth - 200) / 2;
+    }
 
     // Create popup element
     const popup = document.createElement("div");
     popup.classList.add("sharepass--popup");
     popup.style.top = `${Math.floor(top)}px`;
     popup.style.left = `${Math.floor(left)}px`;
-    popup.style.width = `${Math.max(100, Math.floor(e.offsetWidth))}px`;
+    popup.style.width = `${Math.max(120, Math.min(200, Math.floor(e.offsetWidth)))}px`;
 
     createPopupChildren(popup);
 
@@ -139,17 +143,14 @@ async function createPopupChildren(popup: HTMLDivElement) {
     // Add button for every credentials
     const qrCode = document.createElement("div");
     qrCode.classList.add("sharepass--reset");
-    const dataUrl = await QRCode.toDataURL(
-        `sharepass://fill/${token}`,
-        {
-            width: 500,
-            margin: 0,
-            color: {
-                dark: "#1f2937",
-                light: "#f9fafb",
-            },
-        }
-    );
+    const dataUrl = await QRCode.toDataURL(`sharepass://fill/${token}`, {
+        width: 500,
+        margin: 0,
+        color: {
+            dark: "#1f2937",
+            light: "#f9fafb",
+        },
+    });
     qrCode.innerHTML = `<div class="sharepass--qrcode"><img src="${dataUrl}"></div>`;
     popup.appendChild(qrCode);
 
@@ -159,7 +160,7 @@ async function createPopupChildren(popup: HTMLDivElement) {
     btn.innerHTML = `<span>SharePass</span>`;
 
     const timeEl = document.createElement("span");
-    timeEl.classList.add("sharepass--time")
+    timeEl.classList.add("sharepass--time");
     timeEl.innerText = "5:00";
 
     btn.appendChild(timeEl);

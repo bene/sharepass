@@ -6,7 +6,7 @@
     flex-direction: column;
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     background: #f9fafb;
-    border-width: 0 1px 1px 1px;
+    border-width: 1px;
     border-color: #e5e7eb;
     border-style: solid;
     border-radius: 0 0 6px 6px;
@@ -29,7 +29,7 @@
 }
 
 .sharepass--qrcode>img {
-    max-width: min(100%, 200px);
+    max-width: 100%;
     display: block;
 }
 
@@ -40,5 +40,6 @@
 }
 
 .sharepass--time {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+        "Courier New", monospace;
 }
