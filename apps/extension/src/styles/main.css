@@ -1,0 +1,53 @@
+.sharepass--popup {
+    box-sizing: border-box;
+    position: fixed;
+    background-color: #f9fafb;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    z-index: 2147483647;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    border-width: 0 1px 1px 1px;
+    border-color: #e5e7eb;
+    border-style: solid;
+}
+
+.sharepass--popup > button:last-of-type {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-width: 0;
+}
+
+.sharepass--popup > button {
+    border-width: 0 0 1px 0;
+    border-color: #e5e7eb;
+    border-style: solid;
+    background: transparent;
+    margin: 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+        "Courier New", monospace;
+    font-size: 12px;
+    padding: 6px 12px;
+    text-align: start;
+    cursor: pointer;
+}
+
+.sharepass--popup > button:hover {
+    background: #f3f4f6;
+}
+
+.sharepass--popup > button.credentials:hover > .username {
+    font-weight: bold;
+}
+
+.sharepass--popup > button.vault {
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+        "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f3f4f6;
+}
