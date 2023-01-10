@@ -1,20 +1,32 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import * as React from "react";
+import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
+import { Button, SafeAreaView, Text } from "react-native";
+
+WebBrowser.maybeCompleteAuthSession();
 
 export default function App() {
+    const [request, response, promptAsync] = Google.useAuthRequest({
+        expoClientId:
+            "1092210725041-5l5hbs4ru1ob56k1bumc9akv5k4kms3f.apps.googleusercontent.com",
+    });
+
+    React.useEffect(() => {
+        if (response?.type === "success") {
+            const { authentication } = response;
+        }
+    }, [response]);
+
     return (
-        <View style={styles.container}>
-            <Text>Open up App.tsx to start working on your app!</Text>
-            <StatusBar style="auto" />
-        </View>
+        <SafeAreaView>
+            <Button
+                disabled={!request}
+                title="Login"
+                onPress={() => {
+                    promptAsync();
+                }}
+            />
+            <Text>Hallo</Text>
+        </SafeAreaView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-});
