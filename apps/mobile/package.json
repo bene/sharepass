@@ -5,7 +5,8 @@
     "scripts": {
         "dev": "expo start",
         "dev:android": "expo start --android",
-        "dev:ios": "expo start --ios"
+        "dev:ios": "expo start --ios",
+        "build:preview": "eas build --platform ios --local --profile preview"
     },
     "dependencies": {
         "expo": "~47.0.12",

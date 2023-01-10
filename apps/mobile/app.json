@@ -1,7 +1,7 @@
 {
     "expo": {
-        "name": "mobile",
-        "slug": "mobile",
+        "name": "SharePass",
+        "slug": "sharepass",
         "version": "1.0.0",
         "orientation": "portrait",
         "icon": "./assets/icon.png",
@@ -16,7 +16,8 @@
         },
         "assetBundlePatterns": ["**/*"],
         "ios": {
-            "supportsTablet": true
+            "supportsTablet": true,
+            "bundleIdentifier": "dev.bene.sharepass"
         },
         "android": {
             "adaptiveIcon": {
@@ -26,6 +27,11 @@
         },
         "web": {
             "favicon": "./assets/favicon.png"
+        },
+        "extra": {
+            "eas": {
+                "projectId": "4693053b-ab1d-4397-b801-dc855b9861d4"
+            }
         }
     }
 }
