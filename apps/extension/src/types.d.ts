@@ -9,7 +9,6 @@ type LoginForm = {
 };
 
 type State = {
-    credentials: LoginCredentials[];
     currentPopup: HTMLDivElement | null;
     form: LoginForm;
 };

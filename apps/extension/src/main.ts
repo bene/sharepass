@@ -1,10 +1,10 @@
-import { getCredentials } from "./client";
-import IconSettings from "./assets/gear-wide-connected.svg";
+import QRCode from "qrcode";
+
+import { createFillInRequest } from "./client";
 
 import "./styles/main.css";
 
 const state: State = {
-    credentials: [],
     currentPopup: null,
     form: {
         usernameInput: null,
@@ -108,14 +108,14 @@ function onFocus(e: HTMLInputElement) {
     // Get position
     const viewportOffset = e.getBoundingClientRect();
     const top = viewportOffset.top + e.offsetHeight;
-    const left = viewportOffset.left + 1;
+    const left = viewportOffset.left;
 
     // Create popup element
     const popup = document.createElement("div");
     popup.classList.add("sharepass--popup");
-    popup.style.top = `${top}px`;
-    popup.style.left = `${left}px`;
-    popup.style.minWidth = `${e.offsetWidth}px`;
+    popup.style.top = `${Math.floor(top)}px`;
+    popup.style.left = `${Math.floor(left)}px`;
+    popup.style.width = `${Math.max(100, Math.floor(e.offsetWidth))}px`;
 
     createPopupChildren(popup);
 
@@ -133,45 +133,47 @@ function clearCurrentPopup() {
     }
 }
 
-function onBlur() {
-    clearCurrentPopup();
-}
-
-function createPopupChildren(popup: HTMLDivElement) {
-    const children: HTMLElement[] = [];
+async function createPopupChildren(popup: HTMLDivElement) {
+    const token = await createFillInRequest(window.location.host);
 
     // Add button for every credentials
-    for (const credentials of state.credentials) {
-        const btn = popup.appendChild(document.createElement("button"));
-        btn.innerHTML = `<span class="username">${
-            credentials.username
-        }</span><br>${"·".repeat(credentials.password.length)}`;
-        btn.addEventListener("click", () => fillIn(credentials));
-    }
+    const qrCode = document.createElement("div");
+    qrCode.classList.add("sharepass--reset");
+    const dataUrl = await QRCode.toDataURL(
+        `sharepass://fill/${token}`,
+        {
+            width: 500,
+            margin: 0,
+            color: {
+                dark: "#1f2937",
+                light: "#f9fafb",
+            },
+        }
+    );
+    qrCode.innerHTML = `<div class="sharepass--qrcode"><img src="${dataUrl}"></div>`;
+    popup.appendChild(qrCode);
 
     // Add button to open vault
-    const btn = document.createElement("button");
-    btn.classList.add("vault");
-    btn.innerHTML = `<span>Open Vault</span>`;
+    const btn = document.createElement("div");
+    btn.classList.add("sharepass--footer");
+    btn.innerHTML = `<span>SharePass</span>`;
 
-    // Add icon
-    const icon = document.createElement("img");
-    icon.src = IconSettings;
-    icon.width = 10;
-    icon.height = 10;
-    btn.appendChild(icon);
+    const timeEl = document.createElement("span");
+    timeEl.classList.add("sharepass--time")
+    timeEl.innerText = "5:00";
+
+    btn.appendChild(timeEl);
 
     popup.appendChild(btn);
+
+    // const credentials = await waitForConfirmation(token);
+    // fillIn(credentials);
 }
 
 async function onLoad() {
-    state.credentials = await getCredentials();
     findLoginForm();
 
-    if (
-        (!state.form.usernameInput && !state.form.passwordInput) ||
-        state.credentials.length === 0
-    ) {
+    if (!state.form.usernameInput && !state.form.passwordInput) {
         return;
     }
 
@@ -184,17 +186,9 @@ async function onLoad() {
 
             // Add focus event listener
             el.addEventListener("focus", e => onFocus(e.target as any));
-            // el.addEventListener("blur", onBlur);
+            el.addEventListener("blur", clearCurrentPopup);
         }
     }
-
-    // if (document.activeElement === state.form.usernameInput) {
-    //     onFocus(state.form.usernameInput);
-    // }
-
-    // if (document.activeElement === state.form.passwordInput) {
-    //     onFocus(state.form.passwordInput);
-    // }
 }
 
 onLoad();
