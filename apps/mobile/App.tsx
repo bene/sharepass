@@ -2,18 +2,21 @@ import * as React from "react";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import { Button, SafeAreaView, Text } from "react-native";
+import { useClientIds } from "./src/stores/client";
 
 WebBrowser.maybeCompleteAuthSession();
 
 export default function App() {
+    const { data: clientIds } = useClientIds();
+    const [isSuccess, setSuccess] = React.useState(false);
     const [request, response, promptAsync] = Google.useAuthRequest({
-        expoClientId:
-            "1092210725041-5l5hbs4ru1ob56k1bumc9akv5k4kms3f.apps.googleusercontent.com",
+        ...clientIds,
     });
 
     React.useEffect(() => {
         if (response?.type === "success") {
             const { authentication } = response;
+            setSuccess(true);
         }
     }, [response]);
 
@@ -21,12 +24,12 @@ export default function App() {
         <SafeAreaView>
             <Button
                 disabled={!request}
-                title="Login"
+                title="Anmelden"
                 onPress={() => {
                     promptAsync();
                 }}
             />
-            <Text>Hallo</Text>
+            <Text>{isSuccess ? "Success" : "Fail"}</Text>
         </SafeAreaView>
     );
 }
