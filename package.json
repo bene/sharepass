@@ -1,10 +1,16 @@
 {
     "name": "@template/mono",
     "version": "1.0.0",
-    "workspaces": [
-        "packages/*",
-        "apps/*"
-    ],
+    "private": true,
+    "workspaces": {
+        "packages": [
+            "apps/*",
+            "packages/*"
+        ],
+        "nohoist": [
+            "*"
+        ]
+    },
     "scripts": {
         "dev": "turbo run dev",
         "fmt": "prettier --write ."

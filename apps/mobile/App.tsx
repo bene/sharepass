@@ -1,35 +1,47 @@
-import * as React from "react";
-import * as WebBrowser from "expo-web-browser";
-import * as Google from "expo-auth-session/providers/google";
-import { Button, SafeAreaView, Text } from "react-native";
-import { useClientIds } from "./src/stores/client";
+import React from "react";
+import { Text } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
-WebBrowser.maybeCompleteAuthSession();
+import AccountsScreen from "./src/components/AccountsScreen";
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
-    const { data: clientIds } = useClientIds();
-    const [isSuccess, setSuccess] = React.useState(false);
-    const [request, response, promptAsync] = Google.useAuthRequest({
-        ...clientIds,
-    });
-
-    React.useEffect(() => {
-        if (response?.type === "success") {
-            const { authentication } = response;
-            setSuccess(true);
-        }
-    }, [response]);
-
     return (
-        <SafeAreaView>
-            <Button
-                disabled={!request}
-                title="Anmelden"
-                onPress={() => {
-                    promptAsync();
-                }}
-            />
-            <Text>{isSuccess ? "Success" : "Fail"}</Text>
-        </SafeAreaView>
+        <NavigationContainer>
+            <Tab.Navigator>
+                <Tab.Screen
+                    name="Passwords"
+                    component={AccountsScreen}
+                    options={{
+                        tabBarIcon: ({ focused, color, size }) => (
+                            <Ionicons name="ios-lock-closed" size={size} color={color} />
+                        ),
+                        headerLeft: () => <Text>Test</Text>,
+                    }}
+                />
+                {/* <Tab.Screen
+                    name="Cards"
+                    component={HomeScreen}
+                    options={{
+                        tabBarIcon: ({ focused, color, size }) => (
+                            <Ionicons name="card-outline" size={size} color={color} />
+                        ),
+                        headerLeft: () => <Text>Test</Text>,
+                    }}
+                />
+                <Tab.Screen
+                    name="Codes"
+                    component={HomeScreen}
+                    options={{
+                        tabBarIcon: ({ focused, color, size }) => (
+                            <Ionicons name="keypad" size={size} color={color} />
+                        ),
+                    }}
+                /> */}
+            </Tab.Navigator>
+        </NavigationContainer>
     );
 }
