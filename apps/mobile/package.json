@@ -12,7 +12,7 @@
         "@expo/vector-icons": "^13.0.0",
         "@react-navigation/bottom-tabs": "^6.5.3",
         "@react-navigation/native": "^6.1.2",
-        "crypto-js": "3.1.9-1",
+        "crypto-js": "3.3.0",
         "expo": "~47.0.12",
         "expo-auth-session": "^3.8.0",
         "expo-barcode-scanner": "~12.1.0",

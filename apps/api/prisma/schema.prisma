@@ -11,6 +11,53 @@ datasource db {
 }
 
 model User {
-  id   String @id @default(uuid())
-  name String
+  id             String           @id @default(uuid())
+  name           String
+  devices        Device[]
+  accounts       Account[]
+  AccountSharing AccountSharing[]
+}
+
+model Device {
+  id              String           @id @default(uuid())
+  user            User             @relation(fields: [userId], references: [id])
+  userId          String
+  publicKey       String
+  accountMappings AccountMapping[]
+  type            DeviceType
+}
+
+model AccountSharing {
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String
+  account   Account @relation(fields: [accountId], references: [id])
+  accountId String
+
+  @@id([userId, accountId])
+}
+
+enum DeviceType {
+  ANDROID
+  IOS
+  WEB
+  BACKUP
+}
+
+model Account {
+  id             String           @id @default(uuid())
+  owner          User             @relation(fields: [ownerId], references: [id])
+  ownerId        String
+  name           String
+  mappings       AccountMapping[]
+  AccountSharing AccountSharing[]
+}
+
+model AccountMapping {
+  account    Account @relation(fields: [accountId], references: [id])
+  accountId  String
+  device     Device  @relation(fields: [deviceId], references: [id])
+  deviceId   String
+  cipherText String
+
+  @@id([accountId, deviceId])
 }

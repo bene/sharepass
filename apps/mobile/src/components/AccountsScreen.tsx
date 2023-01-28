@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { ScrollView, Text, Image, View, Pressable, Modal } from "react-native";
+
 import AccountDetails from "./AccountDetails";
+import AvatarGroup from "./AvatarGroup";
 
 const accounts = [
     {
@@ -36,10 +38,11 @@ function AccountsScreen() {
                 onPress={() => setSelectedAccount(account)}
                 style={{
                     padding: 12,
-                    backgroundColor: "#fff",
                     marginHorizontal: 12,
+                    backgroundColor: "#fff",
                     flexDirection: "row",
                     alignItems: "center",
+                    justifyContent: "space-between",
                     borderTopStartRadius: idx === 0 ? 8 : 0,
                     borderTopEndRadius: idx === 0 ? 8 : 0,
                     borderBottomStartRadius: idx === accounts.length - 1 ? 8 : 0,
@@ -48,18 +51,46 @@ function AccountsScreen() {
                     borderColor: "#eee",
                 }}
             >
-                <Image
-                    style={{ width: 50, height: 50, marginEnd: 12, borderRadius: 8 }}
-                    source={{
-                        uri: `https://logo.clearbit.com/${account.url}`,
+                <View
+                    style={{
+                        flexDirection: "row",
+                        alignItems: "center",
                     }}
-                />
-                <View style={{ flexDirection: "column" }}>
-                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-                        {account.name}
-                    </Text>
-                    <Text style={{ fontSize: 18 }}>{account.username}</Text>
+                >
+                    <Image
+                        style={{ width: 50, height: 50, marginEnd: 12, borderRadius: 8 }}
+                        source={{
+                            uri: `https://logo.clearbit.com/${account.url}`,
+                        }}
+                    />
+                    <View
+                        style={{
+                            flexDirection: "column",
+                        }}
+                    >
+                        <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                            {account.name}
+                        </Text>
+                        <Text style={{ fontSize: 18 }}>{account.username}</Text>
+                    </View>
                 </View>
+
+                <AvatarGroup
+                    avatars={[
+                        {
+                            letter: "B",
+                            color: "#ea580c",
+                        },
+                        {
+                            letter: "E",
+                            color: "#0284c7",
+                        },
+                        {
+                            letter: "D",
+                            color: "#059669",
+                        },
+                    ]}
+                />
             </Pressable>
         );
     });
